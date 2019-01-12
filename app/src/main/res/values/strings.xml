@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name" translatable="true">Lista de Tarefas</string>
+    <string name="temp_number">0</string>
+    <string name="temp_descricao">descricao temporaria</string>
+    <string name="hint_insert" translatable="true">Digite aqui...</string>
+    <string name="config" translatable="true">Configurações</string>
+</resources>
