@@ -1,38 +1,43 @@
 package com.pedro_rihor.listadetarefas;
 
 import android.app.Application;
-import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
 import java.util.List;
 
-public class TarefaRepository {
+import androidx.lifecycle.LiveData;
+
+class TarefaRepository {
     private TarefaDao tarefaDao;
     private LiveData<List<Tarefa>> liveData;
 
-    public TarefaRepository(Application application) {
+    TarefaRepository(Application application) {
         TarefaDatabase database = TarefaDatabase.getInstance(application);
         tarefaDao = database.tarefaDao();
         liveData = tarefaDao.getAll();
     }
 
-    public void insert(Tarefa tarefa) {
+    void insert(Tarefa tarefa) {
         new InsertTarefaAsyncTask(tarefaDao).execute(tarefa);
     }
 
-    public void update(Tarefa tarefa) {
+    void update(Tarefa tarefa) {
         new UpdateTarefaAsyncTask(tarefaDao).execute(tarefa);
     }
 
-    public void delete(Tarefa tarefa) {
+    void delete(Tarefa tarefa) {
         new DeleteTarefaAsyncTask(tarefaDao).execute(tarefa);
     }
 
-    public void deleteAll() {
+    void deleteAll() {
         new DeleteAllTarefasAsyncTask(tarefaDao).execute();
     }
 
-    public LiveData<List<Tarefa>> getLiveData() {
+    void deleteOlderThan(String tempo) {
+        new DeleteOlderThanAsyncTask(tarefaDao).execute(tempo);
+    }
+
+    LiveData<List<Tarefa>> getLiveData() {
         return liveData;
     }
 
@@ -92,4 +97,18 @@ public class TarefaRepository {
         }
     }
 
+    private static class DeleteOlderThanAsyncTask extends AsyncTask<String, Void, Void> {
+        private TarefaDao tarefaDao;
+
+        private DeleteOlderThanAsyncTask(TarefaDao tarefaDao) {
+            this.tarefaDao = tarefaDao;
+        }
+
+        @Override
+        protected Void doInBackground(String... params) {
+            int resultado = tarefaDao.deleteOlderThan(params[0]);
+            System.out.println("Tarefas excluidas : " + resultado + " !!!");
+            return null;
+        }
+    }
 }

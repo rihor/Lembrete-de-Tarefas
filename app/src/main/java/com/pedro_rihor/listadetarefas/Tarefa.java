@@ -1,11 +1,11 @@
 package com.pedro_rihor.listadetarefas;
 
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
-
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 // SELECT strftime('%d/%m/%Y', 'now');
 
@@ -17,25 +17,17 @@ public class Tarefa {
 
     private String descricao;
 
-    private String date;
+    private String data;
 
     private boolean estado;
 
-
     @Ignore
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");
-
-
-    /*  POSSIVEL SOLUÇÃO PARA CONVERTER STRING EM DATE, CASO EU PRECISE
-        String pattern = "yyyy-MM-dd";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        Date date = simpleDateFormat.parse("2018-09-09");
-     */
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     public Tarefa(String descricao, boolean estado) {
         this.descricao = descricao;
         this.estado = estado;
-        this.date = dateFormat.format(Calendar.getInstance().getTime());
+        this.data = dateFormat.format(Calendar.getInstance().getTime());
     }
 
     public int getId() {
@@ -55,11 +47,11 @@ public class Tarefa {
     }
 
     public String getDate() {
-        return date;
+        return data;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setDate(String data) {
+        this.data = data;
     }
 
     public boolean isEstado() {
@@ -70,5 +62,11 @@ public class Tarefa {
         this.estado = estado;
     }
 
+    public String getData() {
+        return data;
+    }
 
+    public void setData(String data) {
+        this.data = data;
+    }
 }

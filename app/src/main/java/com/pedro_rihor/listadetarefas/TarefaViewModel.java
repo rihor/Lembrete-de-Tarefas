@@ -1,11 +1,12 @@
 package com.pedro_rihor.listadetarefas;
 
 import android.app.Application;
-import android.arch.lifecycle.AndroidViewModel;
-import android.arch.lifecycle.LiveData;
-import android.support.annotation.NonNull;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 public class TarefaViewModel extends AndroidViewModel {
     private TarefaRepository repository;
@@ -31,6 +32,10 @@ public class TarefaViewModel extends AndroidViewModel {
 
     public void deleteAll() {
         repository.deleteAll();
+    }
+
+    public void deleteOlderThan(String tempo) {
+        repository.deleteOlderThan(tempo);
     }
 
     public LiveData<List<Tarefa>> getLiveData() {

@@ -1,28 +1,29 @@
 package com.pedro_rihor.listadetarefas;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     private TarefaViewModel tarefaViewModel;
-    // componentes
     private EditText editTextInserir;
     private FloatingActionButton fab;
 
@@ -62,10 +63,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                Toast.makeText(MainActivity.this, adapter.getTarefaAt(viewHolder.getAdapterPosition()).getDate(), Toast.LENGTH_SHORT).show();
                 tarefaViewModel.delete(
                         adapter.getTarefaAt(viewHolder.getAdapterPosition())
                 );
-                Toast.makeText(MainActivity.this, "tarefa removida com sucesso!", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity.this, "tarefa removida com sucesso!", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -82,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String descricao = editTextInserir.getText().toString();
                 if (descricao.trim().isEmpty()) {
                     Toast.makeText(MainActivity.this, "Escreva algo!", Toast.LENGTH_SHORT).show();
@@ -108,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.config_settings:
                 // abre uma activity para mudar as configurações
-                Toast.makeText(this, "Não implementado ainda!", Toast.LENGTH_SHORT).show();
+                tarefaViewModel.deleteOlderThan("-1 day");
+                /*Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);*/
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -1,13 +1,13 @@
 package com.pedro_rihor.listadetarefas;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
-import android.arch.persistence.room.Insert;
-import android.arch.persistence.room.Query;
-import android.arch.persistence.room.Update;
-
 import java.util.List;
+
+import androidx.lifecycle.LiveData;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
+import androidx.room.Update;
 
 @Dao
 public interface TarefaDao {
@@ -24,7 +24,10 @@ public interface TarefaDao {
     @Query("DELETE FROM tarefas_table")
     void deleteAll();
 
-    @Query("SELECT * FROM tarefas_table")
+    @Query("delete from tarefas_table where  data <= date('now', :tempo) ")
+    int deleteOlderThan(String tempo);
+
+    @Query("SELECT * FROM tarefas_table ORDER BY data")
     LiveData<List<Tarefa>> getAll();
 
 }
