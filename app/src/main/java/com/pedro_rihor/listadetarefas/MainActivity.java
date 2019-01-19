@@ -1,5 +1,6 @@
 package com.pedro_rihor.listadetarefas;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private TarefaViewModel tarefaViewModel;
     private EditText editTextInserir;
     private FloatingActionButton fab;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,10 +36,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // componentes
+        toolbar = findViewById(R.id.toolbar);
         editTextInserir = findViewById(R.id.text_insert);
         fab = findViewById(R.id.button_add);
         fabClick();
 
+        toolbar.setTitleTextAppearance(this, R.style.titulo);
+        setSupportActionBar(toolbar); // define a toolbar como a ActionBar
+
+
+        configRecyclerView();
+    }
+
+    private void configRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -110,10 +122,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.config_settings:
+                //tarefaViewModel.deleteOlderThan("-1 day");
                 // abre uma activity para mudar as configurações
-                tarefaViewModel.deleteOlderThan("-1 day");
-                /*Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

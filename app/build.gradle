@@ -20,25 +20,25 @@ android {
 }
 
 dependencies {
-    def lifecycle_version = '2.0.0-beta01' // pre-androidX
-    def room_version = '2.0.0-beta01' // pre-androidX
- // pre-androidX
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
-    implementation 'com.google.android.material:material:1.0.0-beta01'      // design
-    implementation 'androidx.cardview:cardview:1.0.0-beta01' // card view
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
-    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
-    implementation 'androidx.vectordrawable:vectordrawable:1.0.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
+    implementation 'com.google.android.material:material:1.1.0-alpha02'      // design
+    implementation 'androidx.cardview:cardview:1.0.0'                // card view
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.vectordrawable:vectordrawable:1.1.0-alpha01'
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.0-alpha4'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha4'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    // Notifications
+    implementation "androidx.core:core:1.0.1"
 
     //LIFECYCLE
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version" // pre-androidX
-    annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version" // pre-androidX
+    implementation "androidx.lifecycle:lifecycle-extensions:2.1.0-alpha01"
+    annotationProcessor "androidx.lifecycle:lifecycle-compiler:2.1.0-alpha01"
 
     //ROOM
-    implementation "androidx.room:room-runtime:$room_version" // pre-androidX
-    annotationProcessor "androidx.room:room-compiler:$room_version" // pre-androidX
+    implementation "androidx.room:room-runtime:2.1.0-alpha03"
+    annotationProcessor "androidx.room:room-compiler:2.1.0-alpha03"
 }
