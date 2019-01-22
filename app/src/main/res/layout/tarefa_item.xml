@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_view_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="8dp"
     android:layout_marginTop="8dp"
-    android:layout_marginEnd="8dp">
+    android:layout_marginEnd="8dp"
+    android:transitionName="card_view">
 
     <RelativeLayout
         android:id="@+id/layout_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:transitionName="relative_layout">
 
         <TextView
             android:id="@+id/text_view_number"
@@ -18,7 +21,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
-            android:text="@string/temp_number" />
+            android:text="@string/temp_number"
+            android:textAppearance="@style/style_text_numero"
+            android:transitionName="text_numero" />
 
         <TextView
             android:id="@+id/text_view_descricao"
@@ -30,8 +35,8 @@
             android:layout_toStartOf="@+id/checkbox_estado"
             android:layout_toEndOf="@+id/text_view_number"
             android:text="@string/temp_descricao"
-            android:textAppearance="@style/style_text_descricao" />
-
+            android:textAppearance="@style/style_text_descricao"
+            android:transitionName="text_descricao" />
 
         <CheckBox
             android:id="@+id/checkbox_estado"
@@ -40,7 +45,8 @@
             android:layout_alignTop="@+id/text_view_descricao"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:buttonTint="@color/colorAccent" />
+            android:buttonTint="@color/colorAccent"
+            android:transitionName="checkbox" />
 
     </RelativeLayout>
 

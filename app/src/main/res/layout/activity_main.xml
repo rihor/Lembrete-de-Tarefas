@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         app:fabSize="mini"
+        android:transitionName="fab"
         app:layout_constraintBottom_toBottomOf="@+id/text_insert"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_insert"

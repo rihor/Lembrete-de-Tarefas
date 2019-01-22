@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <CheckBox
+        android:id="@+id/radio_day_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@drawable/checkbox_day_bg"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/day_week_1" />
+
+    <CheckBox
+        android:id="@+id/radio_day_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/checkbox_day_bg"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/day_week_2" />
+
+    <CheckBox
+        android:id="@+id/radio_day_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/checkbox_day_bg"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/day_week_3" />
+
+    <CheckBox
+        android:id="@+id/radio_day_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/checkbox_day_bg"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/day_week_4" />
+
+    <CheckBox
+        android:id="@+id/radio_day_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/checkbox_day_bg"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/day_week_5" />
+
+    <CheckBox
+        android:id="@+id/radio_day_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/checkbox_day_bg"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/day_week_6" />
+
+    <CheckBox
+        android:id="@+id/radio_day_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/checkbox_day_bg"
+        android:button="@null"
+        android:gravity="center"
+        android:text="@string/day_week_7" />
+</LinearLayout>

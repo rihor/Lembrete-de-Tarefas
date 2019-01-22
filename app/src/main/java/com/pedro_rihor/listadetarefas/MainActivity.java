@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     private TarefaViewModel tarefaViewModel;
     private EditText editTextInserir;
-    private FloatingActionButton fab;
+    public FloatingActionButton fab;
     private Toolbar toolbar;
 
     @Override
@@ -41,18 +41,20 @@ public class MainActivity extends AppCompatActivity {
         fab = findViewById(R.id.button_add);
         fabClick();
 
-        toolbar.setTitleTextAppearance(this, R.style.titulo);
         setSupportActionBar(toolbar); // define a toolbar como a ActionBar
 
-
         configRecyclerView();
+    }
+
+    public FloatingActionButton getFab() {
+        return fab;
     }
 
     private void configRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        final TarefaAdapter adapter = new TarefaAdapter();
+        final TarefaAdapter adapter = new TarefaAdapter(MainActivity.this);
         recyclerView.setAdapter(adapter);
 
         tarefaViewModel = ViewModelProviders.of(this).get(TarefaViewModel.class);

@@ -1,5 +1,10 @@
 package com.pedro_rihor.listadetarefas;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
+import android.content.Context;
+import android.content.Intent;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +13,18 @@ import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolder> {
-    private int previousExpandedPosition = -1;
-    private int mExpandedPosition = -1;
+    final static String EXTRA_DESCRICAO = "com.pedro_rihor.listadetarefas.text_descricao";
+    final static String EXTRA_CHECKBOX = "com.pedro_rihor.listadetarefas.checkbox";
+    final static String EXTRA_NUMERO = "com.pedro_rihor.listadetarefas.text_numero";
 
     private static final DiffUtil.ItemCallback<Tarefa> DIFF_CALLBACK = new DiffUtil.ItemCallback<Tarefa>() {
         @Override
@@ -28,10 +37,12 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
             return oldItem.getDescricao().equals(newItem.getDescricao());
         }
     };
+    private final Context context;
     private OnCheckboxListener listener;
 
-    TarefaAdapter() {
+    TarefaAdapter(Context context) {
         super(DIFF_CALLBACK);
+        this.context = context;
     }
 
     @NonNull
@@ -68,6 +79,8 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
         private TextView textViewDescricao;
         private CheckBox checkBoxEstado;
         private RelativeLayout layoutItem;
+        private CardView cardView;
+        private FloatingActionButton fab;
 
         TarefaHolder(@NonNull final View itemView) {
             super(itemView);
@@ -75,6 +88,10 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
             textViewDescricao = itemView.findViewById(R.id.text_view_descricao);
             checkBoxEstado = itemView.findViewById(R.id.checkbox_estado);
             layoutItem = itemView.findViewById(R.id.layout_item);
+            cardView = itemView.findViewById(R.id.card_view_item);
+            if (context instanceof MainActivity) {
+                fab = ((MainActivity) context).getFab();
+            }
 
             checkBoxChange();
             clickItem();
@@ -84,7 +101,28 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
             layoutItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    System.out.println("*****************" + textViewDescricao.getText());
+                    Intent intent = new Intent(itemView.getContext(), DetailActivity.class);
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.putExtra(EXTRA_DESCRICAO, textViewDescricao.getText());
+                    intent.putExtra(EXTRA_CHECKBOX, checkBoxEstado.isChecked());
+                    intent.putExtra(EXTRA_NUMERO, textViewNumero.getText());
+                    // define os pares
+                    Pair<View, String> pairNumero = Pair.create((View) textViewNumero, textViewNumero.getTransitionName());
+                    Pair<View, String> pairText = Pair.create((View) textViewDescricao, textViewDescricao.getTransitionName());
+                    Pair<View, String> pairCard = Pair.create((View) cardView, cardView.getTransitionName());
+                    Pair<View, String> pairFab = Pair.create((View) fab, fab.getTransitionName());
+
+                    ActivityOptions transitionAnimation = ActivityOptions.makeSceneTransitionAnimation(
+                            (Activity) itemView.getContext(),
+                            pairNumero,
+                            pairText,
+                            pairCard,
+                            pairFab);
+
+                    // inicia a activity
+                    itemView.getContext().startActivity(intent, transitionAnimation.toBundle());
+                    // para o brilho branco que ocorre antes no meio da transição
+                    ((Activity) itemView.getContext()).getWindow().setExitTransition(null);
                 }
             });
         }
