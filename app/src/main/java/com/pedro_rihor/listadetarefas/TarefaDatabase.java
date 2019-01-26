@@ -1,7 +1,6 @@
 package com.pedro_rihor.listadetarefas;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -9,7 +8,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = Tarefa.class, version = 4, exportSchema = false)
+@Database(entities = Tarefa.class, version = 7, exportSchema = false)
 public abstract class TarefaDatabase extends RoomDatabase {
 
     private static TarefaDatabase instance;
@@ -18,7 +17,7 @@ public abstract class TarefaDatabase extends RoomDatabase {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            new PopulateDbAsyncTask(instance).execute();
+            //new PopulateDbAsyncTask(instance).execute();
         }
     };
 
@@ -34,7 +33,7 @@ public abstract class TarefaDatabase extends RoomDatabase {
     }
 
     public abstract TarefaDao tarefaDao();
-
+/*
     private static class PopulateDbAsyncTask extends AsyncTask<Void, Void, Void> {
         private TarefaDao tarefaDao;
 
@@ -49,5 +48,5 @@ public abstract class TarefaDatabase extends RoomDatabase {
         }
 
     }
-
+*/
 }

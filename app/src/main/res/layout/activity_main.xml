@@ -17,12 +17,12 @@
         android:layout_height="0dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="8dp"
+        android:fadeScrollbars="false"
         app:layout_constraintBottom_toTopOf="@+id/text_insert"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:fadeScrollbars="false"
-        app:stackFromEnd="true"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:stackFromEnd="true"
         tools:listitem="@layout/tarefa_item" />
 
     <EditText
@@ -51,8 +51,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        app:fabSize="mini"
         android:transitionName="fab"
+        app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/text_insert"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_insert"

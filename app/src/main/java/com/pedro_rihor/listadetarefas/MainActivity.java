@@ -1,7 +1,9 @@
 package com.pedro_rihor.listadetarefas;
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,19 +24,22 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TarefaAdapter.CallbackInterface {
+    final static String EXTRA_TAREFA = "com.pedro_rihor.listadetarefas.tarefa";
+    private static final int MY_REQUEST = 1001;
 
     RecyclerView recyclerView;
     private TarefaViewModel tarefaViewModel;
     private EditText editTextInserir;
     public FloatingActionButton fab;
-    private Toolbar toolbar;
+    Toolbar toolbar;
+    TarefaAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        configRecyclerView();
         // componentes
         toolbar = findViewById(R.id.toolbar);
         editTextInserir = findViewById(R.id.text_insert);
@@ -43,27 +48,16 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar); // define a toolbar como a ActionBar
 
-        configRecyclerView();
-    }
 
-    public FloatingActionButton getFab() {
-        return fab;
     }
 
     private void configRecyclerView() {
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        final TarefaAdapter adapter = new TarefaAdapter(MainActivity.this);
+        adapter = new TarefaAdapter(MainActivity.this);
         recyclerView.setAdapter(adapter);
-
-        tarefaViewModel = ViewModelProviders.of(this).get(TarefaViewModel.class);
-        tarefaViewModel.getLiveData().observe(this, new Observer<List<Tarefa>>() {
-            @Override
-            public void onChanged(@Nullable List<Tarefa> tarefas) {
-                adapter.submitList(tarefas);
-            }
-        });
+        setTarefaViewModel();
 
         // implementação do swipe para remover elemento
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
@@ -77,11 +71,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                Toast.makeText(MainActivity.this, adapter.getTarefaAt(viewHolder.getAdapterPosition()).getDate(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, adapter.getTarefaAt(viewHolder.getAdapterPosition()).getData(), Toast.LENGTH_SHORT).show();
                 tarefaViewModel.delete(
                         adapter.getTarefaAt(viewHolder.getAdapterPosition())
                 );
-                //Toast.makeText(MainActivity.this, "tarefa removida com sucesso!", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -94,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void setTarefaViewModel() {
+        tarefaViewModel = ViewModelProviders.of(this).get(TarefaViewModel.class);
+        tarefaViewModel.getLiveData().observe(this, new Observer<List<Tarefa>>() {
+            @Override
+            public void onChanged(@Nullable List<Tarefa> tarefas) {
+                adapter.submitList(tarefas);
+            }
+        });
+    }
+
     private void fabClick() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,12 +105,9 @@ public class MainActivity extends AppCompatActivity {
                 String descricao = editTextInserir.getText().toString();
                 if (descricao.trim().isEmpty()) {
                     Toast.makeText(MainActivity.this, "Escreva algo!", Toast.LENGTH_SHORT).show();
-                    return;
                 } else {
                     // inserir tarefa no banco de dados
-                    tarefaViewModel.insert(
-                            new Tarefa(editTextInserir.getText().toString(), false)
-                    );
+                    tarefaViewModel.insert(new Tarefa(descricao, false));
                     editTextInserir.setText(""); // reset text
                 }
             }
@@ -131,6 +131,50 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onHandleSelection(Tarefa tarefaSelecionada, int position, TarefaAdapter.TarefaHolder tarefaHolder) {
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.putExtra(EXTRA_TAREFA, tarefaSelecionada); // passagem do objeto Tarefa
+
+        // define os pares, elementos para a transição
+        Pair<View, String> pairText = Pair.create((View) tarefaHolder.textViewDescricao, tarefaHolder.textViewDescricao.getTransitionName());
+        Pair<View, String> pairCard = Pair.create((View) tarefaHolder.cardView, tarefaHolder.cardView.getTransitionName());
+        Pair<View, String> pairFab = Pair.create((View) fab, fab.getTransitionName());
+
+        ActivityOptions transitionAnimation = ActivityOptions.makeSceneTransitionAnimation(
+                this,
+                pairFab,
+                pairCard,
+                pairText);
+        // inicia a activity
+        startActivityForResult(intent, MY_REQUEST, transitionAnimation.toBundle());
+        // para o brilho branco que ocorre antes no meio da transição
+        getWindow().setExitTransition(null);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case RESULT_OK:
+                if (requestCode == MY_REQUEST) {
+                    if (data != null && data.getExtras() != null) {
+                        Bundle bundle = data.getExtras();
+                        Tarefa tarefa;
+                        tarefa = bundle.getParcelable(MainActivity.EXTRA_TAREFA);
+                        tarefaViewModel.update(tarefa);
+                    }
+                }
+                break;
+
+            case RESULT_CANCELED:
+                // temporário
+                Toast.makeText(this, "As alterações não foram salvas!", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

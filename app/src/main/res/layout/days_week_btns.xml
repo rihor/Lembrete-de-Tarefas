@@ -5,7 +5,7 @@
     android:orientation="horizontal">
 
     <CheckBox
-        android:id="@+id/radio_day_1"
+        android:id="@+id/btn_day_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -15,7 +15,7 @@
         android:text="@string/day_week_1" />
 
     <CheckBox
-        android:id="@+id/radio_day_2"
+        android:id="@+id/btn_day_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -26,7 +26,7 @@
         android:text="@string/day_week_2" />
 
     <CheckBox
-        android:id="@+id/radio_day_3"
+        android:id="@+id/btn_day_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -37,7 +37,7 @@
         android:text="@string/day_week_3" />
 
     <CheckBox
-        android:id="@+id/radio_day_4"
+        android:id="@+id/btn_day_4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -48,7 +48,7 @@
         android:text="@string/day_week_4" />
 
     <CheckBox
-        android:id="@+id/radio_day_5"
+        android:id="@+id/btn_day_5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -59,7 +59,7 @@
         android:text="@string/day_week_5" />
 
     <CheckBox
-        android:id="@+id/radio_day_6"
+        android:id="@+id/btn_day_6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -70,7 +70,7 @@
         android:text="@string/day_week_6" />
 
     <CheckBox
-        android:id="@+id/radio_day_7"
+        android:id="@+id/btn_day_7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
