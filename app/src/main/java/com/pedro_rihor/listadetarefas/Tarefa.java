@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -14,6 +15,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "tarefas_table")
 class Tarefa implements Parcelable {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
 
@@ -22,6 +24,26 @@ class Tarefa implements Parcelable {
     private String data;
 
     private boolean estado;
+
+    @ColumnInfo(name = "tempo")
+    private String tempoNotificacao;
+
+    // colunas para notificacao do dia
+    private boolean domingo;
+    private boolean segunda;
+    private boolean terca;
+    private boolean quarta;
+    private boolean quinta;
+    private boolean sexta;
+    private boolean sabado;
+
+    @SuppressLint("SimpleDateFormat")
+    @Ignore
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+    @SuppressLint("SimpleDateFormat")
+    @Ignore
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<Tarefa> CREATOR = new Parcelable.Creator<Tarefa>() {
@@ -35,36 +57,19 @@ class Tarefa implements Parcelable {
             return new Tarefa[size];
         }
     };
-    @ColumnInfo(name = "tempo")
-    private String tempoNotificacao;
-    // colunas para notificacao do dia
-    private boolean domingo;
-    private boolean segunda;
-    private boolean terca;
-    private boolean quarta;
-    private boolean quinta;
-    private boolean sexta;
-    private boolean sabado;
-    @SuppressLint("SimpleDateFormat")
-    @Ignore
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    @SuppressLint("SimpleDateFormat")
-    @Ignore
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    Tarefa(String descricao, boolean estado) {
+    public Tarefa(String descricao, boolean estado) {
         this.descricao = descricao;
-        this.estado = estado;
         this.data = dateFormat.format(Calendar.getInstance().getTime());
+        this.estado = estado;
         this.tempoNotificacao = timeFormat.format(Calendar.getInstance().getTime());
+        this.domingo = false;
+        this.segunda = false;
+        this.terca = false;
+        this.quarta = false;
+        this.quinta = false;
+        this.sexta = false;
+        this.sabado = false;
     }
 
     protected Tarefa(Parcel in) {
@@ -80,6 +85,14 @@ class Tarefa implements Parcelable {
         sexta = in.readByte() != 0x00;
         sabado = in.readByte() != 0x00;
         dateFormat = (SimpleDateFormat) in.readValue(SimpleDateFormat.class.getClassLoader());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     String getDescricao() {

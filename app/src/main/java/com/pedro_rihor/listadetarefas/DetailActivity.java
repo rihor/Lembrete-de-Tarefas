@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -26,10 +27,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     CheckBox checkBox;
     CheckBox btnDomingo, btnSegunda, btnTerca, btnQuarta, btnQuinta, btnSexta, btnSabado;
     TimePicker timePicker;
-    String time; // tempo pego na timePicker
+    String tempoEscolhido; // tempo pego na timePicker
 
-    Bundle bundle;
-    Intent intent;
     Tarefa tarefaSelecionada;
 
     @Override
@@ -37,12 +36,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);   // define o layout
         getWindow().setEnterTransition(null);       // interrompe o flash na transição da activity
-        intent = getIntent();
-        bundle = intent.getExtras();
-        time = "";
-        // define o arquivo de transição
-        getWindow().setSharedElementEnterTransition(
+        getWindow().setSharedElementEnterTransition(// define a transição
                 TransitionInflater.from(this).inflateTransition(R.transition.shared_element_transation));
+
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);       // set toolbar
 
         textoDescricao = findViewById(R.id.text_detail);
         checkBox = findViewById(R.id.checkbox_detail);
@@ -54,8 +52,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         btnSexta = findViewById(R.id.btn_day_6);
         btnSabado = findViewById(R.id.btn_day_7);
         timePicker = findViewById(R.id.timepicker);
+        fab = findViewById(R.id.fab);
 
-        timePicker.setIs24HourView(true);
+        timePicker.setIs24HourView(true);   // retira o AM/PM
 
         btnDomingo.setOnClickListener(this);
         btnSegunda.setOnClickListener(this);
@@ -65,37 +64,49 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         btnSexta.setOnClickListener(this);
         btnSabado.setOnClickListener(this);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);   // set toolbar
-
         getChoiceTimePicker();          // listener do TimePicker
 
-        // evitar null pointer exception
-        if (getIntent() != null && bundle != null) {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
             tarefaSelecionada = bundle.getParcelable(MainActivity.EXTRA_TAREFA);
-            Toast.makeText(this, tarefaSelecionada.isDomingo() + " domingo", Toast.LENGTH_SHORT).show();
-            if (tarefaSelecionada != null) {
-                textoDescricao.setText(tarefaSelecionada.getDescricao());
-                checkBox.setChecked(tarefaSelecionada.isEstado());
-                // recebe a string das horas e divide em hora e minuto, acaba com o array out of bounds exception
-                String tempoSelecionado[] = tarefaSelecionada.getTempoNotificacao().split(":", 2);
-
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    timePicker.setHour(Integer.parseInt(tempoSelecionado[0]));
-                    timePicker.setMinute(Integer.parseInt(tempoSelecionado[1]));
-                } else {
-                    timePicker.setCurrentHour(Integer.parseInt(tempoSelecionado[0]));
-                    timePicker.setCurrentMinute(Integer.parseInt(tempoSelecionado[1]));
-                }
-
-                btnDomingo.setChecked(tarefaSelecionada.isDomingo());
-
-                fab = findViewById(R.id.fab);   // set floating action button
-                fabClick();                     // listener do Floating Action Button
+            if (tarefaSelecionada == null) {
+                finish();
             }
+
+            textoDescricao.setText(tarefaSelecionada.getDescricao());
+            checkBox.setChecked(tarefaSelecionada.isEstado());
+
+            btnDomingo.setChecked(tarefaSelecionada.isDomingo());
+            btnSegunda.setChecked(tarefaSelecionada.isSegunda());
+            btnTerca.setChecked(tarefaSelecionada.isTerca());
+            btnQuarta.setChecked(tarefaSelecionada.isQuarta());
+            btnQuinta.setChecked(tarefaSelecionada.isQuinta());
+            btnSexta.setChecked(tarefaSelecionada.isSexta());
+            btnSabado.setChecked(tarefaSelecionada.isSabado());
+
+            String tempoTarefaArray[] = tarefaSelecionada.getTempoNotificacao().split(":"); // dividir as horas, em HORA e MINUTO
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                timePicker.setHour(Integer.parseInt(tempoTarefaArray[0]));
+                timePicker.setMinute(Integer.parseInt(tempoTarefaArray[1]));
+            } else {
+                timePicker.setCurrentHour(Integer.parseInt(tempoTarefaArray[0]));
+                timePicker.setCurrentMinute(Integer.parseInt(tempoTarefaArray[1]));
+            }
+            checkBoxChange();
+            fabClick();
         } else {
-            finish(); // não vai permitir entrar na activity
+            finish();
         }
+    }
+
+    void checkBoxChange() {
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                tarefaSelecionada.setEstado(isChecked);
+            }
+        });
     }
 
     void fabClick() {
@@ -103,8 +114,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onClick(View view) {
                 Intent resultIntent = new Intent();
-                tarefaSelecionada.setTempoNotificacao(time);
-                System.out.println("!!!!!fabclick " + tarefaSelecionada.getTempoNotificacao());
+                tarefaSelecionada.setTempoNotificacao(tempoEscolhido);
                 resultIntent.putExtra(MainActivity.EXTRA_TAREFA, tarefaSelecionada);
                 setResult(RESULT_OK, resultIntent);
                 finishAfterTransition(); // fecha a activity assim que acabar a transição
@@ -116,7 +126,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
-                time = hourOfDay + ":" + minute;
+                tempoEscolhido = hourOfDay + ":" + minute;
             }
         });
     }

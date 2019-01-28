@@ -1,6 +1,7 @@
 package com.pedro_rihor.listadetarefas;
 
 import android.content.Context;
+import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -8,7 +9,7 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-@Database(entities = Tarefa.class, version = 7, exportSchema = false)
+@Database(entities = Tarefa.class, version = 9, exportSchema = false)
 public abstract class TarefaDatabase extends RoomDatabase {
 
     private static TarefaDatabase instance;
@@ -43,7 +44,6 @@ public abstract class TarefaDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-
             return null;
         }
 

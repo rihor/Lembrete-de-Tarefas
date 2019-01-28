@@ -9,6 +9,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -94,7 +95,6 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
         CheckBox checkBoxEstado;
         RelativeLayout layoutItem;
         CardView cardView;
-        //private FloatingActionButton fab;
 
         TarefaHolder(@NonNull final View itemView) {
             super(itemView);

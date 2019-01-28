@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
         fabClick();
 
         setSupportActionBar(toolbar); // define a toolbar como a ActionBar
-
-
     }
 
     private void configRecyclerView() {
@@ -138,6 +136,7 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
     public void onHandleSelection(Tarefa tarefaSelecionada, int position, TarefaAdapter.TarefaHolder tarefaHolder) {
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
+        System.out.println("tarefaSelecionada.id: " + tarefaSelecionada.getId());
         intent.putExtra(EXTRA_TAREFA, tarefaSelecionada); // passagem do objeto Tarefa
 
         // define os pares, elementos para a transição
@@ -164,9 +163,11 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
                 if (requestCode == MY_REQUEST) {
                     if (data != null && data.getExtras() != null) {
                         Bundle bundle = data.getExtras();
-                        Tarefa tarefa;
-                        tarefa = bundle.getParcelable(MainActivity.EXTRA_TAREFA);
-                        tarefaViewModel.update(tarefa);
+                        Tarefa tarefa = bundle.getParcelable(MainActivity.EXTRA_TAREFA);
+
+                        if (tarefa != null) {
+                            tarefaViewModel.insert(tarefa);
+                        }
                     }
                 }
                 break;
