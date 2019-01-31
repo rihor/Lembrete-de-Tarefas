@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -45,19 +44,6 @@ class Tarefa implements Parcelable {
     @Ignore
     private SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm");
 
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Tarefa> CREATOR = new Parcelable.Creator<Tarefa>() {
-        @Override
-        public Tarefa createFromParcel(Parcel in) {
-            return new Tarefa(in);
-        }
-
-        @Override
-        public Tarefa[] newArray(int size) {
-            return new Tarefa[size];
-        }
-    };
-
     public Tarefa(String descricao, boolean estado) {
         this.descricao = descricao;
         this.data = dateFormat.format(Calendar.getInstance().getTime());
@@ -70,21 +56,6 @@ class Tarefa implements Parcelable {
         this.quinta = false;
         this.sexta = false;
         this.sabado = false;
-    }
-
-    protected Tarefa(Parcel in) {
-        descricao = in.readString();
-        data = in.readString();
-        estado = in.readByte() != 0x00;
-        tempoNotificacao = in.readString();
-        domingo = in.readByte() != 0x00;
-        segunda = in.readByte() != 0x00;
-        terca = in.readByte() != 0x00;
-        quarta = in.readByte() != 0x00;
-        quinta = in.readByte() != 0x00;
-        sexta = in.readByte() != 0x00;
-        sabado = in.readByte() != 0x00;
-        dateFormat = (SimpleDateFormat) in.readValue(SimpleDateFormat.class.getClassLoader());
     }
 
     public int getId() {
@@ -183,13 +154,44 @@ class Tarefa implements Parcelable {
         this.sabado = sabado;
     }
 
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Tarefa> CREATOR = new Parcelable.Creator<Tarefa>() {
+        @Override
+        public Tarefa createFromParcel(Parcel in) {
+            return new Tarefa(in);
+        }
+
+        @Override
+        public Tarefa[] newArray(int size) {
+            return new Tarefa[size];
+        }
+    };
+
     @Override
     public int describeContents() {
         return 0;
     }
 
+    protected Tarefa(Parcel in) {
+        id = in.readInt();
+        descricao = in.readString();
+        data = in.readString();
+        estado = in.readByte() != 0x00;
+        tempoNotificacao = in.readString();
+        domingo = in.readByte() != 0x00;
+        segunda = in.readByte() != 0x00;
+        terca = in.readByte() != 0x00;
+        quarta = in.readByte() != 0x00;
+        quinta = in.readByte() != 0x00;
+        sexta = in.readByte() != 0x00;
+        sabado = in.readByte() != 0x00;
+        dateFormat = (SimpleDateFormat) in.readValue(SimpleDateFormat.class.getClassLoader());
+        timeFormat = (SimpleDateFormat) in.readValue(SimpleDateFormat.class.getClassLoader());
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
         dest.writeString(descricao);
         dest.writeString(data);
         dest.writeByte((byte) (estado ? 0x01 : 0x00));
@@ -202,6 +204,6 @@ class Tarefa implements Parcelable {
         dest.writeByte((byte) (sexta ? 0x01 : 0x00));
         dest.writeByte((byte) (sabado ? 0x01 : 0x00));
         dest.writeValue(dateFormat);
+        dest.writeValue(timeFormat);
     }
-
 }

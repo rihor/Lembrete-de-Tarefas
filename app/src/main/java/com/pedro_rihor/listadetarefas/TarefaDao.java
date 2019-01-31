@@ -6,17 +6,16 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
 @Dao
 public interface TarefaDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insert(Tarefa tarefa);
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
+    @Update
     void update(Tarefa tarefa);
 
     @Delete

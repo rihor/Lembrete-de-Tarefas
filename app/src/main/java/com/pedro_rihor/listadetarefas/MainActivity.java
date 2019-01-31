@@ -39,18 +39,17 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        configRecyclerView();
-        // componentes
-        toolbar = findViewById(R.id.toolbar);
         editTextInserir = findViewById(R.id.text_insert);
+        toolbar = findViewById(R.id.toolbar);
         fab = findViewById(R.id.button_add);
+        recyclerView = findViewById(R.id.recycler_view);
+        setSupportActionBar(toolbar); // define a toolbar como a ActionBar
         fabClick();
 
-        setSupportActionBar(toolbar); // define a toolbar como a ActionBar
+        configRecyclerView();
     }
 
     private void configRecyclerView() {
-        recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         adapter = new TarefaAdapter(MainActivity.this);
@@ -124,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
             case R.id.config_settings:
                 //tarefaViewModel.deleteOlderThan("-1 day");
                 // abre uma activity para mudar as configurações
+                //TODO activity de configuração
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(intent);
                 return true;
@@ -166,14 +166,13 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
                         Tarefa tarefa = bundle.getParcelable(MainActivity.EXTRA_TAREFA);
 
                         if (tarefa != null) {
-                            tarefaViewModel.insert(tarefa);
+                            tarefaViewModel.update(tarefa);
                         }
                     }
                 }
                 break;
 
             case RESULT_CANCELED:
-                // temporário
                 Toast.makeText(this, "As alterações não foram salvas!", Toast.LENGTH_SHORT).show();
                 break;
         }

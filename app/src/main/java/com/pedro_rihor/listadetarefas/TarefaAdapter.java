@@ -9,7 +9,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -60,7 +59,9 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
 
         @Override
         public boolean areContentsTheSame(@NonNull Tarefa oldItem, @NonNull Tarefa newItem) {
-            return oldItem.getDescricao().equals(newItem.getDescricao());
+            boolean booleanDesc = oldItem.getDescricao().equals(newItem.getDescricao());
+            boolean booleanEstado = oldItem.isEstado() == newItem.isEstado();
+            return booleanDesc && booleanEstado;
         }
     };
 
