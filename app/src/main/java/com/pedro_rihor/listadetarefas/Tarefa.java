@@ -185,8 +185,8 @@ class Tarefa implements Parcelable {
         quinta = in.readByte() != 0x00;
         sexta = in.readByte() != 0x00;
         sabado = in.readByte() != 0x00;
-        dateFormat = (SimpleDateFormat) in.readValue(SimpleDateFormat.class.getClassLoader());
-        timeFormat = (SimpleDateFormat) in.readValue(SimpleDateFormat.class.getClassLoader());
+        //dateFormat = (SimpleDateFormat) in.readValue(SimpleDateFormat.class.getClassLoader());
+        //timeFormat = (SimpleDateFormat) in.readValue(SimpleDateFormat.class.getClassLoader());
     }
 
     @Override
@@ -203,7 +203,7 @@ class Tarefa implements Parcelable {
         dest.writeByte((byte) (quinta ? 0x01 : 0x00));
         dest.writeByte((byte) (sexta ? 0x01 : 0x00));
         dest.writeByte((byte) (sabado ? 0x01 : 0x00));
-        dest.writeValue(dateFormat);
-        dest.writeValue(timeFormat);
+        //dest.writeValue(dateFormat);
+        //dest.writeValue(timeFormat);
     }
 }

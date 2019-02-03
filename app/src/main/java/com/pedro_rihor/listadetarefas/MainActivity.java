@@ -140,15 +140,14 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
         intent.putExtra(EXTRA_TAREFA, tarefaSelecionada); // passagem do objeto Tarefa
 
         // define os pares, elementos para a transição
-        Pair<View, String> pairText = Pair.create((View) tarefaHolder.textViewDescricao, tarefaHolder.textViewDescricao.getTransitionName());
+        //Pair<View, String> pairText = Pair.create((View) tarefaHolder.textViewDescricao, tarefaHolder.textViewDescricao.getTransitionName());
         Pair<View, String> pairCard = Pair.create((View) tarefaHolder.cardView, tarefaHolder.cardView.getTransitionName());
         Pair<View, String> pairFab = Pair.create((View) fab, fab.getTransitionName());
 
         ActivityOptions transitionAnimation = ActivityOptions.makeSceneTransitionAnimation(
                 this,
                 pairFab,
-                pairCard,
-                pairText);
+                pairCard);
         // inicia a activity
         startActivityForResult(intent, MY_REQUEST, transitionAnimation.toBundle());
         // para o brilho branco que ocorre antes no meio da transição

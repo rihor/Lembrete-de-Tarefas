@@ -114,6 +114,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent resultIntent = new Intent();
                 tarefaSelecionada.setTempoNotificacao(tempoEscolhido);
                 Toast.makeText(DetailActivity.this, "Detail id:" + tarefaSelecionada.getId(), Toast.LENGTH_SHORT).show();

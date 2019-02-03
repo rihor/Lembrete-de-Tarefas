@@ -33,10 +33,22 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
 
     }
 
+    private static final DiffUtil.ItemCallback<Tarefa> DIFF_CALLBACK = new DiffUtil.ItemCallback<Tarefa>() {
+        @Override
+        public boolean areItemsTheSame(@NonNull Tarefa oldItem, @NonNull Tarefa newItem) {
+            return oldItem.getId() == newItem.getId();
+        }
+
+        @Override
+        public boolean areContentsTheSame(@NonNull Tarefa oldItem, @NonNull Tarefa newItem) {
+//            return oldItem.isEstado() == newItem.isEstado();
+            return false;
+        }
+    };
+
     @Override
     public void onBindViewHolder(@NonNull final TarefaHolder tarefaHolder, final int position) {
         Tarefa tarefaAtual = getItem(position);
-        tarefaHolder.textViewNumero.setText(String.valueOf(position + 1)); // é a posição que fica visivel, não o id do elemento
         tarefaHolder.textViewDescricao.setText(tarefaAtual.getDescricao());
         tarefaHolder.checkBoxEstado.setChecked(tarefaAtual.isEstado());
 
@@ -50,20 +62,6 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
             }
         });
     }
-
-    private static final DiffUtil.ItemCallback<Tarefa> DIFF_CALLBACK = new DiffUtil.ItemCallback<Tarefa>() {
-        @Override
-        public boolean areItemsTheSame(@NonNull Tarefa oldItem, @NonNull Tarefa newItem) {
-            return oldItem.getId() == newItem.getId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(@NonNull Tarefa oldItem, @NonNull Tarefa newItem) {
-            boolean booleanDesc = oldItem.getDescricao().equals(newItem.getDescricao());
-            boolean booleanEstado = oldItem.isEstado() == newItem.isEstado();
-            return booleanDesc && booleanEstado;
-        }
-    };
 
     @NonNull
     @Override
@@ -91,7 +89,6 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
     }
 
     class TarefaHolder extends RecyclerView.ViewHolder {
-        TextView textViewNumero;
         TextView textViewDescricao;
         CheckBox checkBoxEstado;
         RelativeLayout layoutItem;
@@ -99,19 +96,11 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
 
         TarefaHolder(@NonNull final View itemView) {
             super(itemView);
-            textViewNumero = itemView.findViewById(R.id.text_view_number);
             textViewDescricao = itemView.findViewById(R.id.text_view_descricao);
             checkBoxEstado = itemView.findViewById(R.id.checkbox_estado);
             layoutItem = itemView.findViewById(R.id.layout_item);
             cardView = itemView.findViewById(R.id.card_view_item);
 
-
-            checkBoxChange();
-
-        }
-
-        // listener para checkbox de cada item
-        void checkBoxChange() {
             checkBoxEstado.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -123,5 +112,4 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
             });
         }
     }
-
 }
