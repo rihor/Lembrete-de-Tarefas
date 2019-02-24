@@ -70,7 +70,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         Bundle bundle = intent.getExtras();
         if (bundle != null) {
             tarefaSelecionada = bundle.getParcelable(MainActivity.EXTRA_TAREFA);
-            Toast.makeText(DetailActivity.this, "XXX Detail id:" + tarefaSelecionada.getId(), Toast.LENGTH_SHORT).show();
             if (tarefaSelecionada == null) {
                 finish();
             }
@@ -117,7 +116,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
                 Intent resultIntent = new Intent();
                 tarefaSelecionada.setTempoNotificacao(tempoEscolhido);
-                Toast.makeText(DetailActivity.this, "Detail id:" + tarefaSelecionada.getId(), Toast.LENGTH_SHORT).show();
                 resultIntent.putExtra(MainActivity.EXTRA_TAREFA, tarefaSelecionada);
                 setResult(RESULT_OK, resultIntent);
                 finishAfterTransition(); // fecha a activity assim que acabar a transição

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NotificationActivity">
+
+    <TextView
+        android:id="@+id/txt_notific_titulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:text="Tarefa deve ser feita."
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/txt_notific_descricao"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        android:text="Descricao da tarefa"
+        app:layout_constraintEnd_toEndOf="@+id/txt_notific_titulo"
+        app:layout_constraintStart_toStartOf="@+id/txt_notific_titulo"
+        app:layout_constraintTop_toBottomOf="@+id/txt_notific_titulo" />
+
+    <TextView
+        android:id="@+id/txt_notific_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Tarefa de : 01-01-2019"
+        app:layout_constraintEnd_toEndOf="@+id/txt_notific_descricao"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="@+id/txt_notific_descricao"
+        app:layout_constraintTop_toBottomOf="@+id/txt_notific_descricao" />
+
+    <TextView
+        android:id="@+id/txt_notific_horario"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:text="16:40"
+        app:layout_constraintEnd_toEndOf="@+id/txt_notific_data"
+        app:layout_constraintStart_toStartOf="@+id/txt_notific_data"
+        app:layout_constraintTop_toBottomOf="@+id/txt_notific_data" />
+
+    <Button
+        android:id="@+id/btn_notific_OK"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="OK"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_notific_horario" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
