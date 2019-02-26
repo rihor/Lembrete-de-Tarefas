@@ -1,4 +1,4 @@
-package com.pedro_rihor.listadetarefas;
+package com.pedro_rihor.listadetarefas.Settings;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -17,6 +17,8 @@ import android.preference.PreferenceManager;
 import android.preference.RingtonePreference;
 import android.text.TextUtils;
 import android.view.MenuItem;
+
+import com.pedro_rihor.listadetarefas.R;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.pedro_rihor.listadetarefas;
+package com.pedro_rihor.listadetarefas.Settings;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

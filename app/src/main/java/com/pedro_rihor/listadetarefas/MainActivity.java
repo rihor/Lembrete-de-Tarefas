@@ -1,14 +1,7 @@
 package com.pedro_rihor.listadetarefas;
 
 import android.app.ActivityOptions;
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.Menu;
@@ -18,6 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pedro_rihor.listadetarefas.Notification.ShowNotificationJob;
+import com.pedro_rihor.listadetarefas.Settings.SettingsActivity;
 
 import java.util.List;
 
@@ -25,7 +20,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.NotificationCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -33,9 +27,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MainActivity extends AppCompatActivity implements TarefaAdapter.CallbackInterface {
-    public static final String BROADCAST = "com.pedro_rihor.android.action.broadcast";
-    public static final String NOTIFICATION_SERVICE = "com.pedro_rihor.android.action.notification_service";
-    public static final String EXTRA_NOTIFICATION = "com.pedro_rihor.listadetarefas.notification";
     final static String EXTRA_TAREFA = "com.pedro_rihor.listadetarefas.tarefa";
     private static final int MY_REQUEST = 1001;
 
@@ -50,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         editTextInserir = findViewById(R.id.text_insert);
         toolbar = findViewById(R.id.toolbar);
         fab = findViewById(R.id.button_add);
@@ -105,52 +97,13 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
         });
     }
 
-    void setNotificacao(Tarefa tarefa) {
-        String CHANNEL_ID = "my_channel_01";
-        CharSequence name = "my_channel";
-        String Description = "Canal 1 de tarefas";
+    public void setNotification(Tarefa tarefa) {
+        int hora, minuto;
+        String[] tempo = tarefa.getTempoNotificacao().split(":");
+        hora = Integer.parseInt(tempo[0]);
+        minuto = Integer.parseInt(tempo[1]);
 
-        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, NotificationManager.IMPORTANCE_HIGH);
-            mChannel.setDescription(Description);
-            mChannel.enableLights(true);
-            mChannel.setLightColor(Color.RED);
-            mChannel.enableVibration(true);
-            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            mChannel.setShowBadge(true);
-
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(mChannel);
-            }
-        }
-
-        Intent resultIntent = new Intent(this, MainActivity.class); // activity destino
-
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(
-                this, 1, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
-        Notification notification = builder
-                .setContentTitle("Tarefa")
-                .setContentText("Tarefa a ser feita!")
-                .setSmallIcon(R.mipmap.ic_stat_notification)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(resultPendingIntent)
-                .setAutoCancel(true)
-                .setColor(getResources().getColor(android.R.color.holo_red_dark))
-                .build();
-
-        // intent para o receiver
-        Intent intentBroadcast = new Intent(BROADCAST);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(MainActivity.EXTRA_TAREFA, tarefa);
-        bundle.putParcelable(MainActivity.EXTRA_NOTIFICATION, notification);
-        intentBroadcast.putExtras(bundle);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intentBroadcast, 0);
-        //sendBroadcast(intentBroadcast);
-        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 15000, pendingIntent);
+        ShowNotificationJob.scheduleNotification(hora, minuto);
     }
 
     private void fabClick() {
@@ -226,7 +179,8 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
                             tarefaViewModel.update(tarefa);
 
                             // TODO alarm set up
-                            setNotificacao(tarefa);
+
+                            setNotification(tarefa);
                         }
                     }
                 }

@@ -13,6 +13,7 @@ import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "tarefas_table")
+public
 class Tarefa implements Parcelable {
 
     @PrimaryKey(autoGenerate = true)
