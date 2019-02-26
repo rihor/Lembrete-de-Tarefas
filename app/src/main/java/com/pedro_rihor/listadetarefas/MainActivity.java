@@ -3,6 +3,7 @@ package com.pedro_rihor.listadetarefas;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,10 +12,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.pedro_rihor.listadetarefas.Notification.ShowNotificationJob;
+import com.pedro_rihor.listadetarefas.Notification.Constants;
+import com.pedro_rihor.listadetarefas.Notification.NotificationHandler;
 import com.pedro_rihor.listadetarefas.Settings.SettingsActivity;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,9 +29,11 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
 
 public class MainActivity extends AppCompatActivity implements TarefaAdapter.CallbackInterface {
     final static String EXTRA_TAREFA = "com.pedro_rihor.listadetarefas.tarefa";
+    private static final String TAG = MainActivity.class.getSimpleName();
     private static final int MY_REQUEST = 1001;
 
     RecyclerView recyclerView;
@@ -103,7 +109,39 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
         hora = Integer.parseInt(tempo[0]);
         minuto = Integer.parseInt(tempo[1]);
 
-        ShowNotificationJob.scheduleNotification(hora, minuto);
+        String tag = generateKey();
+        long tempoAlerta = getAlertTime(hora, minuto);
+        long tempoAtual = System.currentTimeMillis();
+        long delay = tempoAlerta - tempoAtual;
+
+        Log.d(TAG, "Tempo de Alerta - " + tempoAlerta + "  Tempo Atual " + tempoAtual);
+
+        String textoNotificacao = "Tarefa a ser feita: " + tarefa.getDescricao();
+        Data dataExtras = createWorkInputData("Tarefa", textoNotificacao, tarefa.getId());
+
+
+        NotificationHandler.scheduleNotification(delay, dataExtras, tag);
+    }
+
+    private Data createWorkInputData(String title, String text, int id) {
+        // como se estivesse passando um bundle para uma activity
+        return new Data.Builder()
+                .putString(Constants.EXTRA_TITLE, title)
+                .putString(Constants.EXTRA_TEXT, text)
+                .putInt(Constants.EXTRA_ID, id)
+                .build();
+    }
+
+    private long getAlertTime(int hora, int minuto) {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR, hora);
+        cal.set(Calendar.MINUTE, minuto);
+        cal.set(Calendar.SECOND, 0);
+        return cal.getTimeInMillis();
+    }
+
+    private String generateKey() {
+        return UUID.randomUUID().toString();
     }
 
     private void fabClick() {
@@ -179,7 +217,6 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
                             tarefaViewModel.update(tarefa);
 
                             // TODO alarm set up
-
                             setNotification(tarefa);
                         }
                     }

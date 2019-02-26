@@ -44,4 +44,7 @@ dependencies {
 
     //ANDROID-JOB
     implementation 'com.evernote:android-job:1.1.8'
+
+    //WORK MANAGER
+    implementation "android.arch.work:work-runtime:1.0.0-rc02"
 }
