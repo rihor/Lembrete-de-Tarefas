@@ -81,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
                 tarefaViewModel.delete(
                         adapter.getTarefaAt(viewHolder.getAdapterPosition())
                 );
+                NotificationHandler.cancelNotification(
+                        String.valueOf(adapter.getTarefaAt(viewHolder.getAdapterPosition()).getId())
+                );
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -105,37 +108,82 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
 
     public void setNotification(Tarefa tarefa) {
         int hora, minuto;
-        String[] tempo = tarefa.getTempoNotificacao().split(":");
+        String[] tempo;
+        try {
+            tempo = tarefa.getTempoNotificacao().split(":");
+        } catch (NullPointerException ex) {
+            Calendar calendar = Calendar.getInstance();
+            String hour = String.valueOf(calendar.get(Calendar.HOUR));
+            String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+            tempo = new String[]{hour, minute};
+            Log.e(TAG, ex.getMessage());
+        }
         hora = Integer.parseInt(tempo[0]);
         minuto = Integer.parseInt(tempo[1]);
 
         String tag = generateKey();
-        long tempoAlerta = getAlertTime(hora, minuto);
+
         long tempoAtual = System.currentTimeMillis();
-        long delay = tempoAlerta - tempoAtual;
+        Data dataExtras = createWorkInputData(tarefa);
 
-        Log.d(TAG, "Tempo de Alerta - " + tempoAlerta + "  Tempo Atual " + tempoAtual);
+        boolean feito = false;
 
-        String textoNotificacao = "Tarefa a ser feita: " + tarefa.getDescricao();
-        Data dataExtras = createWorkInputData("Tarefa", textoNotificacao, tarefa.getId());
-
-
-        NotificationHandler.scheduleNotification(delay, dataExtras, tag);
+        if (tarefa.isDomingo()) {
+            Log.d(TAG, "notificação no domingo");
+            feito = notificationSetting(tempoAtual, hora, minuto, 0, dataExtras, tag);
+        }
+        if (tarefa.isSegunda()) {
+            Log.d(TAG, "notificação na segunda");
+            feito = notificationSetting(tempoAtual, hora, minuto, 1, dataExtras, tag);
+        }
+        if (tarefa.isTerca()) {
+            Log.d(TAG, "notificação na terça");
+            feito = notificationSetting(tempoAtual, hora, minuto, 2, dataExtras, tag);
+        }
+        if (tarefa.isQuarta()) {
+            Log.d(TAG, "notificação na quarta");
+            feito = notificationSetting(tempoAtual, hora, minuto, 3, dataExtras, tag);
+        }
+        if (tarefa.isQuinta()) {
+            Log.d(TAG, "notificação na quinta");
+            feito = notificationSetting(tempoAtual, hora, minuto, 4, dataExtras, tag);
+        }
+        if (tarefa.isSexta()) {
+            Log.d(TAG, "notificação na sexta");
+            feito = notificationSetting(tempoAtual, hora, minuto, 5, dataExtras, tag);
+        }
+        if (tarefa.isSabado()) {
+            Log.d(TAG, "notificação no sabado");
+            feito = notificationSetting(tempoAtual, hora, minuto, 6, dataExtras, tag);
+        }
+        if (!feito) {
+            Toast.makeText(this, "Marque pelo menos algum dia da semana", Toast.LENGTH_LONG).show();
+        }
     }
 
-    private Data createWorkInputData(String title, String text, int id) {
+    // agenda notificação de acordo com o dia marcado
+    private boolean notificationSetting(long tempoAtual, int hora, int minuto, int weekDay, Data dataExtras, String tag) {
+        long tempoAlerta = getAlertTime(hora, minuto, weekDay);
+        long delay = tempoAlerta - tempoAtual;
+        Log.d(TAG, "!!!tempoAlerta: " + tempoAlerta + " tempoAtual: " + tempoAtual);
+        NotificationHandler.scheduleNotification(delay, dataExtras, tag);
+        return true;
+    }
+
+    private Data createWorkInputData(Tarefa tarefa) {
         // como se estivesse passando um bundle para uma activity
         return new Data.Builder()
-                .putString(Constants.EXTRA_TITLE, title)
-                .putString(Constants.EXTRA_TEXT, text)
-                .putInt(Constants.EXTRA_ID, id)
+                .putString(Constants.EXTRA_TEXT, "Tarefa a ser feita: " + tarefa.getDescricao())
+                .putInt(Constants.EXTRA_ID, tarefa.getId())
                 .build();
     }
 
-    private long getAlertTime(int hora, int minuto) {
+    // retorna o horario exato em Long
+    private long getAlertTime(int hour, int minute, int weekDay) {
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR, hora);
-        cal.set(Calendar.MINUTE, minuto);
+        cal.set(Calendar.DAY_OF_WEEK, weekDay);
+        cal.set(Calendar.HOUR, hour);
+        cal.set(Calendar.MINUTE, minute);
         cal.set(Calendar.SECOND, 0);
         return cal.getTimeInMillis();
     }

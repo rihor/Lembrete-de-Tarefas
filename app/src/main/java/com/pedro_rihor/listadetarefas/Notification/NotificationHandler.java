@@ -44,15 +44,15 @@ public class NotificationHandler extends Worker {
     @Override
     public ListenableWorker.Result doWork() {
 
-        String title = getInputData().getString(Constants.EXTRA_TITLE);
         String text = getInputData().getString(Constants.EXTRA_TEXT);
         int id = (int) getInputData().getLong(Constants.EXTRA_ID, 0);
 
-        sendNotification(title, text, id);
+        sendNotification(text, id);
         return Result.success();
     }
 
-    private void sendNotification(String title, String text, int id) {
+
+    private void sendNotification(String text, int id) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.putExtra(Constants.EXTRA_ID, id);
@@ -62,12 +62,12 @@ public class NotificationHandler extends Worker {
         NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel("default", "Default", NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationChannel channel = new NotificationChannel("canal1", "Default", NotificationManager.IMPORTANCE_DEFAULT);
             Objects.requireNonNull(notificationManager).createNotificationChannel(channel);
         }
 
         NotificationCompat.Builder notification = new NotificationCompat.Builder(getApplicationContext(), "canal1")
-                .setContentTitle(title)
+                .setContentTitle("Tarefa")
                 .setContentText(text)
                 .setContentIntent(pendingIntent)
                 .setSmallIcon(R.mipmap.ic_stat_notification)
@@ -77,24 +77,5 @@ public class NotificationHandler extends Worker {
         Objects.requireNonNull(notificationManager).notify(id, notification.build());
     }
 
-//    @NonNull
-//    @Override
-//    public Result doWork() {
-//        System.out.println("NotificationHandler doWork online !!!!!!!!!!!!!!!!!!!!!");
-//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-//        Notification notification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
-//                .setContentTitle("Tarefa")
-//                .setContentText("Você tem tarefas a fazer!")
-//                .setAutoCancel(true)
-//                .setContentIntent(pendingIntent)
-//                .setSmallIcon(R.mipmap.ic_stat_notification)
-//                .setShowWhen(true)
-//                .setColor(Color.RED)
-//                .setLocalOnly(true)
-//                .build();
-//
-//        NotificationManagerCompat.from(getApplicationContext()).notify(new Random().nextInt(), notification);
-//        return Worker.Result.success();
-//    }success
+
 }

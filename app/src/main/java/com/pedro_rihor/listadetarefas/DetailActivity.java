@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,11 +18,13 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pedro_rihor.listadetarefas.Settings.SettingsActivity;
 
+import java.util.Calendar;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
-
+    private static final String TAG = DetailActivity.class.getSimpleName();
     FloatingActionButton fab;
     Toolbar toolbar;
     TextView textoDescricao;
@@ -86,7 +89,17 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             btnSexta.setChecked(tarefaSelecionada.isSexta());
             btnSabado.setChecked(tarefaSelecionada.isSabado());
 
-            String tempoTarefaArray[] = tarefaSelecionada.getTempoNotificacao().split(":"); // dividir as horas, em HORA e MINUTO
+            String tempoTarefaArray[];
+            try {
+                tempoTarefaArray = tarefaSelecionada.getTempoNotificacao().split(":"); // dividir as horas, em HORA e MINUTO
+            } catch (NullPointerException ex) {
+                Calendar calendar = Calendar.getInstance();
+                String hour = String.valueOf(calendar.get(Calendar.HOUR));
+                String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+                tempoTarefaArray = new String[]{hour, minute};
+                Log.e(TAG, ex.getMessage());
+            }
+
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 timePicker.setHour(Integer.parseInt(tempoTarefaArray[0]));
                 timePicker.setMinute(Integer.parseInt(tempoTarefaArray[1]));
