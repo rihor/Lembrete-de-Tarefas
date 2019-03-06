@@ -24,9 +24,10 @@ public interface TarefaDao {
     @Query("DELETE FROM tarefas_table")
     void deleteAll();
 
-    @Query("delete from tarefas_table where  data <= date('now', :tempo) ")
-    int deleteOlderThan(String tempo);
-
+    /*
+        @Query("delete from tarefas_table where  data <= date('now', :tempo) ")
+        int deleteOlderThan(String tempo);
+    */
     @Query("SELECT * FROM tarefas_table ORDER BY data")
     LiveData<List<Tarefa>> getAll();
 

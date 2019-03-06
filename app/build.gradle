@@ -22,7 +22,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha02'
-    implementation 'com.google.android.material:material:1.1.0-alpha03'      // design
+    implementation 'com.google.android.material:material:1.1.0-alpha04'      // design
     implementation 'androidx.cardview:cardview:1.0.0'                // card view
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -42,9 +42,9 @@ dependencies {
     implementation "androidx.room:room-runtime:2.1.0-alpha04"
     annotationProcessor "androidx.room:room-compiler:2.1.0-alpha04"
 
-    //ANDROID-JOB
-    implementation 'com.evernote:android-job:1.1.8'
+    //WORK MANAGER (NOTIFICATIONS)
+    implementation "android.arch.work:work-runtime:1.0.0"
 
-    //WORK MANAGER
-    implementation "android.arch.work:work-runtime:1.0.0-rc02"
+    //EVERNOTE
+    implementation 'com.evernote:android-job:1.2.6'
 }

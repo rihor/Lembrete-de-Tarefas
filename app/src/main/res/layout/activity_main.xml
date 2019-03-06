@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:stackFromEnd="true"
-        tools:listitem="@layout/tarefa_item" />
+        tools:listitem="@layout/frag_tarefa_item" />
 
     <EditText
         android:id="@+id/text_insert"

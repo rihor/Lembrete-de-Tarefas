@@ -33,10 +33,6 @@ class TarefaRepository {
         new DeleteAllTarefasAsyncTask(tarefaDao).execute();
     }
 
-    void deleteOlderThan(String tempo) {
-        new DeleteOlderThanAsyncTask(tarefaDao).execute(tempo);
-    }
-
     LiveData<List<Tarefa>> getLiveData() {
         return liveData;
     }
@@ -93,21 +89,6 @@ class TarefaRepository {
         @Override
         protected Void doInBackground(Void... voids) {
             tarefaDao.deleteAll();
-            return null;
-        }
-    }
-
-    private static class DeleteOlderThanAsyncTask extends AsyncTask<String, Void, Void> {
-        private TarefaDao tarefaDao;
-
-        private DeleteOlderThanAsyncTask(TarefaDao tarefaDao) {
-            this.tarefaDao = tarefaDao;
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            int resultado = tarefaDao.deleteOlderThan(params[0]);
-            System.out.println("Tarefas excluidas : " + resultado + " !!!");
             return null;
         }
     }

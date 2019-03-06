@@ -67,7 +67,7 @@ public class TarefaAdapter extends ListAdapter<Tarefa, TarefaAdapter.TarefaHolde
     @Override
     public TarefaHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View itemView = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.tarefa_item, viewGroup, false);
+                .inflate(R.layout.frag_tarefa_item, viewGroup, false);
 
         return new TarefaHolder(itemView);
     }

@@ -192,7 +192,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.config_settings:
-                //tarefaViewModel.deleteOlderThan("-1 day");
                 // TODO abre uma activity para mudar as configurações
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(intent);

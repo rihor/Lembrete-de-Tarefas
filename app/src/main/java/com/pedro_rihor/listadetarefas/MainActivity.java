@@ -17,6 +17,7 @@ import com.pedro_rihor.listadetarefas.Notification.NotificationHandler;
 import com.pedro_rihor.listadetarefas.Settings.SettingsActivity;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -81,9 +82,7 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
                 tarefaViewModel.delete(
                         adapter.getTarefaAt(viewHolder.getAdapterPosition())
                 );
-                NotificationHandler.cancelNotification(
-                        String.valueOf(adapter.getTarefaAt(viewHolder.getAdapterPosition()).getId())
-                );
+                NotificationHandler.cancelNotification(generateKey());
             }
         }).attachToRecyclerView(recyclerView);
 
@@ -129,32 +128,25 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
         boolean feito = false;
 
         if (tarefa.isDomingo()) {
-            Log.d(TAG, "notificação no domingo");
-            feito = notificationSetting(tempoAtual, hora, minuto, 0, dataExtras, tag);
-        }
-        if (tarefa.isSegunda()) {
-            Log.d(TAG, "notificação na segunda");
             feito = notificationSetting(tempoAtual, hora, minuto, 1, dataExtras, tag);
         }
-        if (tarefa.isTerca()) {
-            Log.d(TAG, "notificação na terça");
+        if (tarefa.isSegunda()) {
             feito = notificationSetting(tempoAtual, hora, minuto, 2, dataExtras, tag);
         }
-        if (tarefa.isQuarta()) {
-            Log.d(TAG, "notificação na quarta");
+        if (tarefa.isTerca()) {
             feito = notificationSetting(tempoAtual, hora, minuto, 3, dataExtras, tag);
         }
-        if (tarefa.isQuinta()) {
-            Log.d(TAG, "notificação na quinta");
+        if (tarefa.isQuarta()) {
             feito = notificationSetting(tempoAtual, hora, minuto, 4, dataExtras, tag);
         }
-        if (tarefa.isSexta()) {
-            Log.d(TAG, "notificação na sexta");
+        if (tarefa.isQuinta()) {
             feito = notificationSetting(tempoAtual, hora, minuto, 5, dataExtras, tag);
         }
-        if (tarefa.isSabado()) {
-            Log.d(TAG, "notificação no sabado");
+        if (tarefa.isSexta()) {
             feito = notificationSetting(tempoAtual, hora, minuto, 6, dataExtras, tag);
+        }
+        if (tarefa.isSabado()) {
+            feito = notificationSetting(tempoAtual, hora, minuto, 7, dataExtras, tag);
         }
         if (!feito) {
             Toast.makeText(this, "Marque pelo menos algum dia da semana", Toast.LENGTH_LONG).show();
@@ -166,6 +158,9 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
         long tempoAlerta = getAlertTime(hora, minuto, weekDay);
         long delay = tempoAlerta - tempoAtual;
         Log.d(TAG, "!!!tempoAlerta: " + tempoAlerta + " tempoAtual: " + tempoAtual);
+        Log.d(TAG, "!!!tempoAlerta: " + new Date(tempoAlerta));
+        Log.d(TAG, "!!!tempoAtual: " + new Date(tempoAtual));
+
         NotificationHandler.scheduleNotification(delay, dataExtras, tag);
         return true;
     }
@@ -181,7 +176,16 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
     // retorna o horario exato em Long
     private long getAlertTime(int hour, int minute, int weekDay) {
         Calendar cal = Calendar.getInstance();
+
+        boolean avancarDia = false;
+        if (weekDay < cal.get(Calendar.DAY_OF_WEEK)) { // se o dia da semana marcado for anterior ao dia atual
+            avancarDia = true;
+        }
+
         cal.set(Calendar.DAY_OF_WEEK, weekDay);
+        if (avancarDia) {// avancar o dia para o da proxima semana, respeitando o dia da semana marcado
+            cal.add(Calendar.WEEK_OF_MONTH, 1); // pula para a proxima semana do mês
+        }
         cal.set(Calendar.HOUR, hour);
         cal.set(Calendar.MINUTE, minute);
         cal.set(Calendar.SECOND, 0);
@@ -219,8 +223,6 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.config_settings:
-                //tarefaViewModel.deleteOlderThan("-1 day");
-                // abre uma activity para mudar as configurações
                 //TODO activity de configuração
                 Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
                 startActivity(intent);

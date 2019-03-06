@@ -34,10 +34,6 @@ public class TarefaViewModel extends AndroidViewModel {
         repository.deleteAll();
     }
 
-    public void deleteOlderThan(String tempo) {
-        repository.deleteOlderThan(tempo);
-    }
-
     public LiveData<List<Tarefa>> getLiveData() {
         return liveData;
     }
