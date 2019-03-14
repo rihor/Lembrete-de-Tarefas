@@ -15,6 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pedro_rihor.listadetarefas.Notification.Constants;
 import com.pedro_rihor.listadetarefas.Notification.NotificationHandler;
 import com.pedro_rihor.listadetarefas.Settings.SettingsActivity;
+import com.pedro_rihor.listadetarefas.Settings.SharedPref;
+import com.pedro_rihor.listadetarefas.Settings.Themes;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -43,9 +45,22 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
     public FloatingActionButton fab;
     Toolbar toolbar;
     TarefaAdapter adapter;
+    SharedPref sharedPref;
+
+    @Override
+    protected void onResume() {
+        if (sharedPref.getThemeChanged()) {
+            Log.d(TAG, sharedPref.getThemeChanged() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            sharedPref.setThemeChanged(false);
+            recreate();
+        }
+        super.onResume();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPref = new SharedPref(this);
+        loadTheme(); // define o tema de acordo com a preferencia guardada
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -57,6 +72,23 @@ public class MainActivity extends AppCompatActivity implements TarefaAdapter.Cal
         fabClick();
 
         configRecyclerView();
+    }
+
+    public void loadTheme() {
+        switch (sharedPref.getTheme()) {
+            case Themes.VERDE:
+                setTheme(R.style.GreenTheme);
+                break;
+            case Themes.BRANCO:
+                setTheme(R.style.WhiteTheme);
+                break;
+            case Themes.PRETO:
+                setTheme(R.style.BlackTheme);
+                break;
+            case Themes.AZUL:
+            default:
+                setTheme(R.style.BlueTheme);
+        }
     }
 
     private void configRecyclerView() {

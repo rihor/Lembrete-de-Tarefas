@@ -1,29 +1,101 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <!-- blue theme -->
+    <style name="BlueTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#1976d2</item>
+        <item name="colorPrimaryDark">#004ba0</item>
+        <item name="colorAccent">#087f23</item>
+        <item name="backgroundColor">#dee2e8</item>
+        <item name="cardbackgroundColor">#63a4ff</item>
+        <item name="textColor">#FFF</item>
+        <item name="editTextColor">#000</item>
+        <item name="editTextBackgroundColor">#FFF</item>
+        <item name="checkBoxColor">#FFF</item>
+        <item name="fabIcon">#FFF</item>
+        <item name="icSettings">@drawable/ic_settings_white</item>
+        <item name="icAdd">@drawable/ic_add_white</item>
+        <item name="icCheck">@drawable/ic_check_white</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <!-- green theme -->
+    <style name="GreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#8BC34A</item>
+        <item name="colorPrimaryDark">#689F38</item>
+        <item name="colorAccent">#FF4081</item>
+        <item name="backgroundColor">#dee2e8</item>
+        <item name="cardbackgroundColor">#8BC34A</item>
+        <item name="textColor">#FFF</item>
+        <item name="editTextColor">#212121</item>
+        <item name="editTextBackgroundColor">#FFF</item>
+        <item name="checkBoxColor">#FFF</item>
+        <item name="fabIcon">#FFF</item>
+        <item name="icSettings">@drawable/ic_settings_white</item>
+        <item name="icAdd">@drawable/ic_add_white</item>
+        <item name="icCheck">@drawable/ic_check_white</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <!-- white theme -->
+    <style name="WhiteTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#FFF</item>
+        <item name="colorPrimaryDark">#bdbdbd</item>
+        <item name="colorAccent">#63a4ff</item>
+        <item name="backgroundColor">#dee2e8</item>
+        <item name="cardbackgroundColor">#FFF</item>
+        <item name="textColor">#212121</item>
+        <item name="editTextColor">#212121</item>
+        <item name="editTextBackgroundColor">#FFF</item>
+        <item name="checkBoxColor">#63a4ff</item>
+        <item name="fabIcon">#FFF</item>
+        <item name="icSettings">@drawable/ic_settings_black</item>
+        <item name="icAdd">@drawable/ic_add_white</item>
+        <item name="icCheck">@drawable/ic_check_white</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <!-- black theme -->
+    <style name="BlackTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#212121</item>
+        <item name="colorPrimaryDark">#000</item>
+        <item name="colorAccent">#fff</item>
+        <item name="backgroundColor">#303030</item>
+        <item name="cardbackgroundColor">#424242</item>
+        <item name="textColor">#FFF</item>
+        <item name="editTextColor">#fff</item>
+        <item name="editTextBackgroundColor">#424242</item>
+        <item name="checkBoxColor">#FFF</item>
+        <item name="fabIcon">#212121</item>
+        <item name="icSettings">@drawable/ic_settings_white</item>
+        <item name="icAdd">@drawable/ic_add_black</item>
+        <item name="icCheck">@drawable/ic_check_black</item>
+        <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
+    </style>
+
+    <style name="WindowAnimationTransition">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
     <style name="style_text_numero" parent="Base.AlertDialog.AppCompat.Light">
-        <item name="android:textSize">14dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
     <style name="style_text_descricao" parent="Base.AlertDialog.AppCompat.Light">
-        <item name="android:textSize">16dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:letterSpacing">0.05</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
 
     <style name="titulo">
         <item name="android:fontFamily">@font/bebas</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">?attr/textColor</item>
     </style>
 
-    <style name="AppTheme.NoActionBar">
+    <style name="NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>

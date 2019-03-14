@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pedro_rihor.listadetarefas.Settings.SettingsActivity;
+import com.pedro_rihor.listadetarefas.Settings.SharedPref;
+import com.pedro_rihor.listadetarefas.Settings.Themes;
 
 import java.util.Calendar;
 
@@ -32,11 +34,13 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     CheckBox btnDomingo, btnSegunda, btnTerca, btnQuarta, btnQuinta, btnSexta, btnSabado;
     TimePicker timePicker;
     String tempoEscolhido; // tempo pego na timePicker
-
+    SharedPref sharedPref;
     Tarefa tarefaSelecionada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPref = new SharedPref(this);
+        loadTheme(); // define o tema de acordo com a preferencia guardada
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);   // define o layout
         getWindow().setEnterTransition(null);       // interrompe o flash na transição da activity
@@ -121,6 +125,23 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 tarefaSelecionada.setEstado(isChecked);
             }
         });
+    }
+
+    public void loadTheme() {
+        switch (sharedPref.getTheme()) {
+            case Themes.VERDE:
+                setTheme(R.style.GreenTheme);
+                break;
+            case Themes.BRANCO:
+                setTheme(R.style.WhiteTheme);
+                break;
+            case Themes.PRETO:
+                setTheme(R.style.BlackTheme);
+                break;
+            case Themes.AZUL:
+            default:
+                setTheme(R.style.BlueTheme);
+        }
     }
 
     void fabClick() {

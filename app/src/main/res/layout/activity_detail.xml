@@ -22,6 +22,7 @@
         android:layout_marginEnd="8dp"
         android:elevation="10dp"
         android:transitionName="card_view"
+        app:cardBackgroundColor="?attr/cardbackgroundColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.182"
         app:layout_constraintStart_toStartOf="@+id/toolbar"
@@ -52,6 +53,7 @@
                     android:layout_marginTop="0dp"
                     android:text="@string/temp_descricao"
                     android:textAppearance="@style/style_text_descricao"
+                    android:textColor="?attr/textColor"
                     android:transitionName="text_descricao" />
 
                 <CheckBox
@@ -61,7 +63,7 @@
                     android:layout_alignTop="@+id/text_detail"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:buttonTint="@color/colorAccent"
+                    android:buttonTint="?attr/checkBoxColor"
                     android:transitionName="checkbox" />
 
             </RelativeLayout>
@@ -74,6 +76,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
                 android:text="@string/notificacoes"
+                android:textColor="?attr/textColor"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/layout_detail" />
 
@@ -95,7 +99,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Horário"
+                android:text="@string/horario"
+                android:textColor="?attr/textColor"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="@+id/txt_notificacoes"
                 app:layout_constraintTop_toBottomOf="@+id/include" />
 
@@ -122,12 +128,14 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:src="?attr/icCheck"
         android:transitionName="fab"
+        android:tint="?attr/fabIcon"
         app:fabSize="mini"
         app:layout_anchor="@+id/toolbar"
         app:layout_anchorGravity="right|bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_check" />
+        app:srcCompat="?attr/icCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

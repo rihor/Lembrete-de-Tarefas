@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="style_colors">
+        <attr name="backgroundColor" format="color" />
+        <attr name="cardbackgroundColor" format="color" />
+        <attr name="textColor" format="color" />
+        <attr name="editTextColor" format="color" />
+        <attr name="editTextBackgroundColor" format="color" />
+        <attr name="checkBoxColor" format="color" />
+        <attr name="fabIcon" format="color" />
+        <attr name="menuIcon" format="color" />
+        <attr name="icSettings" format="reference" />
+        <attr name="icAdd" format="reference" />
+        <attr name="icCheck" format="reference" />
+    </declare-styleable>
+</resources>

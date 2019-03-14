@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLight"
+    android:background="?attr/backgroundColor"
     tools:context=".MainActivity">
 
     <include
@@ -36,12 +36,14 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/bg_insert"
         android:hint="@string/hint_insert"
+        android:textColor="?attr/editTextColor"
         android:inputType="textMultiLine"
         android:paddingStart="16dp"
         android:paddingTop="7dp"
         android:paddingEnd="16dp"
         android:paddingBottom="7dp"
         android:selectAllOnFocus="false"
+        android:textColorHint="?attr/editTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_add"
         app:layout_constraintStart_toStartOf="parent" />
@@ -51,12 +53,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:src="?attr/icAdd"
         android:transitionName="fab"
+        android:tint="?attr/fabIcon"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/text_insert"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/text_insert"
-        app:srcCompat="@drawable/ic_add_white_24dp" />
+        app:srcCompat="?attr/icAdd" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
